@@ -1,7 +1,9 @@
 <template>
   <div class="main">
     <el-container>
-      <el-aside width="200px">Aside</el-aside>
+      <el-aside width="200px">
+        <Aside />
+      </el-aside>
       <el-container>
         <el-header>Header</el-header>
         <el-main>
@@ -12,11 +14,17 @@
   </div>
 </template>
 <script>
+import Aside from "../components/Aside";
 export default {
   name: "Index",
   data() {
     return {};
-  }
+  },
+  components: {
+    Aside
+  },
+  mounted() {},
+  methods: {}
 };
 </script>
 <style scoped lang="scss">
@@ -28,15 +36,15 @@ export default {
 }
 .el-header,
 .el-footer {
-  background-color: #b3c0d1;
+  background-color: #fff;
   color: #333;
   text-align: center;
   line-height: 60px;
 }
 
 .el-aside {
-  background-color: #d3dce6;
-  color: #333;
+  background-color: #000c17;
+  color: #fff;
   text-align: center;
   line-height: 200px;
 }
