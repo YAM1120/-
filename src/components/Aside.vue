@@ -1,23 +1,23 @@
 <template>
   <div class="main">
     <el-menu
-      default-active="2"
+      :default-active="onRoutes"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
-      background-color="#545c64"
+      background-color="#000c17"
       text-color="#fff"
-      active-text-color="#ffd04b"
+      active-text-color="#409EFF"
       unique-opened
       router
     >
-      <el-submenu index="1">
+      <el-submenu v-for="item in items" :key="item.id" :index="item.id + 'a'">
         <template slot="title">
-          <i class="el-icon-location"></i>
-          <span>导航一</span>
+          <i :class="item.icon"></i>
+          <span>{{ item.title }}</span>
         </template>
-        <el-menu-item index="1-1">
-          <template slot="title">分组一</template>
+        <el-menu-item v-for="i in item.children" :key="i.id" :index="i.name">
+          <template slot="title">{{ i.title }}</template>
         </el-menu-item>
       </el-submenu>
     </el-menu>
@@ -25,9 +25,15 @@
 </template>
 <script>
 export default {
-  name: "aside",
+  name: "AsideNave",
   data() {
     return {};
+  },
+  props: ["items"],
+  computed: {
+    onRoutes() {
+      return this.$route.path.replace("/", "");
+    }
   },
   methods: {
     handleOpen(key, keyPath) {
