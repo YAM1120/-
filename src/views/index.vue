@@ -22,12 +22,12 @@ export default {
   name: "Index",
   data() {
     return {
-      items: []
+      items: [],
     };
   },
   components: {
     AsideNave,
-    HeaderTop
+    HeaderTop,
   },
   mounted() {
     this.getMuneData();
@@ -36,15 +36,15 @@ export default {
     getMuneData() {
       this.$apiList
         .getMenuData()
-        .then(res => {
+        .then((res) => {
           console.log(res, "res");
           this.items = res.data.data.data;
         })
-        .catch(err => {
+        .catch((err) => {
           this.$message.error("请求失败");
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped lang="scss">

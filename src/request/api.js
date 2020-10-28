@@ -4,6 +4,10 @@ const api = {
     //获取菜单
     getMenuData() {
         return axios.get(`${baseUrl}/menu`);
+    },
+    //获取线路
+    getLineData() {
+        return axios.get(`${baseUrl}/line`);
     }
 }
 export default api;

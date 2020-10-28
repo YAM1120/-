@@ -99,6 +99,42 @@
             </el-tab-pane>
           </el-tabs>
         </div>
+        <div class="market_top_right">
+          <ul class="right_date">
+            <ol>
+              今日
+            </ol>
+            <ol>
+              本周
+            </ol>
+            <ol>
+              本月
+            </ol>
+            <ol>
+              全年
+            </ol>
+            <ol>
+              <el-date-picker
+                v-model="value"
+                type="daterange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              >
+              </el-date-picker>
+            </ol>
+          </ul>
+          <div class="ranking_visit">
+            <p>门店访问量排名</p>
+            <div class="store_des">
+              <div class="des_left">
+                <p class="left_index">1</p>
+                <p class="left_name">工专路 0 号店</p>
+              </div>
+              <div class="des_right">323,234</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -111,7 +147,19 @@ export default {
     return {
       activeName: "second",
       timer: null,
+      value: "",
+      market_content: null,
+      visit_content: null,
     };
+  },
+  created() {
+    window.chartResize = () => {
+      this.market_content.resize();
+      this.visit_content.resize();
+    };
+    window.addEventListener("resize", chartResize);
+    this.getMarketData();
+    this.getVisitData();
   },
   mounted() {
     this.windowResize();
@@ -124,6 +172,10 @@ export default {
       this.getMarketData();
       this.getVisitData();
     });
+    // window.addEventListener("resize", function () {
+    //   this.getMarketData().resize();
+    //   this.getVisitData().resize();
+    // });
   },
   methods: {
     chartResize() {
@@ -396,16 +448,10 @@ export default {
       effect_content.setOption(option);
     },
     handleClick(tab, event) {
-      console.log(tab, event);
-      //   setTimeout(() => {
-      //     this.$nextTick(() => {
-      //       this.getMarketData();
-      //       this.getVisitData();
-      //     });
-      //   }, 100);
+      console.log(tab, "event");
     },
     getMarketData() {
-      let market_content = echarts.init(this.$refs.market_content);
+      this.market_content = echarts.init(this.$refs.market_content);
       let option = {
         color: ["#3398DB"],
         tooltip: {
@@ -491,10 +537,10 @@ export default {
         ],
       };
 
-      market_content.setOption(option);
+      this.market_content.setOption(option);
     },
     getVisitData() {
-      let visit_content = echarts.init(this.$refs.visit_content);
+      this.visit_content = echarts.init(this.$refs.visit_content);
       let option = {
         color: ["#3398DB"],
         tooltip: {
@@ -580,7 +626,7 @@ export default {
         ],
       };
 
-      visit_content.setOption(option);
+      this.visit_content.setOption(option);
     },
   },
 };
@@ -694,6 +740,20 @@ export default {
     .item_content {
       height: 300px;
       width: 70%;
+    }
+  }
+  .market_top_right {
+    position: relative;
+    .right_date {
+      position: absolute;
+      right: 10px;
+      top: -392px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      ol {
+        padding-left: 10px;
+      }
     }
   }
 }
