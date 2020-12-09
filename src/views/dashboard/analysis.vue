@@ -126,23 +126,32 @@
           </ul>
           <div class="ranking_visit">
             <p>门店访问量排名</p>
-            <div class="store_des">
+            <div
+              class="store_des"
+              v-for="(item, index) in visitData"
+              :key="index"
+            >
               <div class="des_left">
-                <p class="left_index">1</p>
-                <p class="left_name">工专路 0 号店</p>
+                <p :class="['left_index', `${index}` < 3 ? 'firstNum' : '']">
+                  {{ index + 1 }}
+                </p>
+                <p class="left_name">工专路{{ index }}号店</p>
               </div>
-              <div class="des_right">323,234</div>
+              <div class="des_right">{{ item.des_right }}</div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <HotSearch></HotSearch>
   </div>
 </template>
 <script>
 import echarts from "echarts";
+import HotSearch from "@/components/dashboard/analysis/hotSearch";
 export default {
   name: "analysis",
+  components: { HotSearch },
   data() {
     return {
       activeName: "second",
@@ -150,17 +159,37 @@ export default {
       value: "",
       market_content: null,
       visit_content: null,
+      visitData: [
+        {
+          des_right: "323,234"
+        },
+        {
+          des_right: "323,134"
+        },
+        {
+          des_right: "423,234"
+        },
+        {
+          des_right: "363,234"
+        },
+        {
+          des_right: "373,284"
+        },
+        {
+          des_right: "263,135"
+        }
+      ]
     };
   },
-  created() {
-    window.chartResize = () => {
-      this.market_content.resize();
-      this.visit_content.resize();
-    };
-    window.addEventListener("resize", chartResize);
-    this.getMarketData();
-    this.getVisitData();
-  },
+  //   created() {
+  //     window.chartResize = () => {
+  //       this.market_content.resize();
+  //       this.visit_content.resize();
+  //     };
+  //     window.addEventListener("resize", chartResize);
+  //     this.getMarketData();
+  //     this.getVisitData();
+  //   },
   mounted() {
     this.windowResize();
     this.getAccessData();
@@ -200,7 +229,7 @@ export default {
           right: "0%",
           bottom: "0%",
           top: "0%",
-          containLabel: true,
+          containLabel: true
         },
         xAxis: {
           show: false,
@@ -231,12 +260,12 @@ export default {
             "21:00",
             "22:00",
             "23:00",
-            "24:00",
-          ],
+            "24:00"
+          ]
         },
         yAxis: {
           show: false,
-          type: "value",
+          type: "value"
         },
         series: [
           {
@@ -268,12 +297,12 @@ export default {
               82,
               33,
               20,
-              0,
+              0
             ],
             itemStyle: {
               color: "#975fe4",
               // borderColor: '#f1f1f1',
-              borderWidth: 1,
+              borderWidth: 1
             },
             areaStyle: {
               //区域填充样式
@@ -286,25 +315,25 @@ export default {
                   [
                     {
                       offset: 0,
-                      color: "#975fe4",
+                      color: "#975fe4"
                     },
                     {
                       offset: 0.6,
-                      color: "#975fe4",
+                      color: "#975fe4"
                     },
                     {
                       offset: 0.8,
-                      color: "#975fe4",
-                    },
+                      color: "#975fe4"
+                    }
                   ],
                   false
                 ),
                 shadowColor: "#975fe4",
-                shadowBlur: 6,
-              },
-            },
-          },
-        ],
+                shadowBlur: 6
+              }
+            }
+          }
+        ]
       };
 
       trend_content.setOption(option);
@@ -319,15 +348,15 @@ export default {
           trigger: "axis",
           axisPointer: {
             // 坐标轴指示器，坐标轴触发有效
-            type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
-          },
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
         },
         grid: {
           left: "-15%",
           right: "0%",
           bottom: "0%",
           containLabel: true,
-          height: "100%",
+          height: "100%"
         },
         xAxis: [
           {
@@ -358,18 +387,18 @@ export default {
               "21:00",
               "22:00",
               "23:00",
-              "24:00",
+              "24:00"
             ],
             axisTick: {
-              alignWithLabel: true,
-            },
-          },
+              alignWithLabel: true
+            }
+          }
         ],
         yAxis: [
           {
             show: false,
-            type: "value",
-          },
+            type: "value"
+          }
         ],
         series: [
           {
@@ -401,10 +430,10 @@ export default {
               82,
               33,
               20,
-              0,
-            ],
-          },
-        ],
+              0
+            ]
+          }
+        ]
       };
       pay_content.setOption(option);
     },
@@ -414,21 +443,21 @@ export default {
         dataset: {
           source: [
             ["score", "amount", "product"],
-            [89.3, 58212, "Matcha Latte"],
-          ],
+            [89.3, 58212, "Matcha Latte"]
+          ]
         },
         grid: {
           left: "-30%",
           //   bottom: "0%",
-          containLabel: true,
+          containLabel: true
         },
         xAxis: {
           show: false,
-          name: "amount",
+          name: "amount"
         },
         yAxis: {
           show: false,
-          type: "category",
+          type: "category"
         },
         color: "#13c2c2",
         series: [
@@ -438,17 +467,20 @@ export default {
               // Map the "amount" column to X axis.
               x: "amount",
               // Map the "product" column to Y axis
-              y: "product",
+              y: "product"
             },
-            barWidth: 27,
-          },
-        ],
+            barWidth: 27
+          }
+        ]
       };
 
       effect_content.setOption(option);
     },
     handleClick(tab, event) {
       console.log(tab, "event");
+      this.windowResize();
+      //   this.getMarketData();
+      //   this.getVisitData();
     },
     getMarketData() {
       this.market_content = echarts.init(this.$refs.market_content);
@@ -458,14 +490,14 @@ export default {
           trigger: "axis",
           axisPointer: {
             // 坐标轴指示器，坐标轴触发有效
-            type: "none", // 默认为直线，可选为：'line' | 'shadow'
-          },
+            type: "none" // 默认为直线，可选为：'line' | 'shadow'
+          }
         },
         grid: {
           left: "3%",
           right: "4%",
           bottom: "3%",
-          containLabel: true,
+          containLabel: true
         },
         xAxis: [
           {
@@ -482,64 +514,65 @@ export default {
               "9月",
               "10月",
               "11月",
-              "12月",
+              "12月"
             ],
             axisLine: {
               lineStyle: {
                 color: "#bfbfbf",
-                type: "solid",
-              },
+                type: "solid"
+              }
             },
             axisTick: {
               alignWithLabel: true,
               lineStyle: {
                 color: "#bfbfbf",
-                type: "solid",
-              },
+                type: "solid"
+              }
             },
             axisLabel: {
               margin: 10,
               color: "#bbbbbb",
               textStyle: {
-                fontSize: 14,
-              },
-            },
-          },
+                fontSize: 14
+              }
+            }
+          }
         ],
         yAxis: [
           {
             name: "销售趋势",
             // nameLocation: "end",
             nameTextStyle: {
-              align: "right",
+              align: "right"
             },
             type: "value",
             axisLine: {
-              show: false,
+              show: false
             },
             axisTick: {
-              show: false,
+              show: false
             },
             splitLine: {
               lineStyle: {
-                type: "dashed",
-              },
-            },
-          },
+                type: "dashed"
+              }
+            }
+          }
         ],
         series: [
           {
             name: "直接访问",
             type: "bar",
             barWidth: "60%",
-            data: [10, 52, 200, 334, 390, 330, 220, 100, 60, 80, 150, 170],
-          },
-        ],
+            data: [10, 52, 200, 334, 390, 330, 220, 100, 60, 80, 150, 170]
+          }
+        ]
       };
 
       this.market_content.setOption(option);
     },
     getVisitData() {
+      console.log("111111111tab");
       this.visit_content = echarts.init(this.$refs.visit_content);
       let option = {
         color: ["#3398DB"],
@@ -547,14 +580,14 @@ export default {
           trigger: "axis",
           axisPointer: {
             // 坐标轴指示器，坐标轴触发有效
-            type: "none", // 默认为直线，可选为：'line' | 'shadow'
-          },
+            type: "none" // 默认为直线，可选为：'line' | 'shadow'
+          }
         },
         grid: {
           left: "3%",
           right: "4%",
           bottom: "3%",
-          containLabel: true,
+          containLabel: true
         },
         xAxis: [
           {
@@ -571,64 +604,64 @@ export default {
               "9月",
               "10月",
               "11月",
-              "12月",
+              "12月"
             ],
             axisLine: {
               lineStyle: {
                 color: "#bfbfbf",
-                type: "solid",
-              },
+                type: "solid"
+              }
             },
             axisTick: {
               alignWithLabel: true,
               lineStyle: {
                 color: "#bfbfbf",
-                type: "solid",
-              },
+                type: "solid"
+              }
             },
             axisLabel: {
               margin: 10,
               color: "#bbbbbb",
               textStyle: {
-                fontSize: 14,
-              },
-            },
-          },
+                fontSize: 14
+              }
+            }
+          }
         ],
         yAxis: [
           {
             name: "访问量趋势",
             // nameLocation: "end",
             nameTextStyle: {
-              align: "right",
+              align: "right"
             },
             type: "value",
             axisLine: {
-              show: false,
+              show: false
             },
             axisTick: {
-              show: false,
+              show: false
             },
             splitLine: {
               lineStyle: {
-                type: "dashed",
-              },
-            },
-          },
+                type: "dashed"
+              }
+            }
+          }
         ],
         series: [
           {
             name: "直接访问",
             type: "bar",
             barWidth: "60%",
-            data: [70, 66, 160, 204, 300, 330, 250, 170, 30, 70, 160, 190],
-          },
-        ],
+            data: [70, 66, 160, 204, 300, 330, 250, 170, 30, 70, 160, 190]
+          }
+        ]
       };
 
       this.visit_content.setOption(option);
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped lang="scss">
@@ -725,6 +758,11 @@ export default {
         height: 100%;
         width: 100%;
       }
+      .market_content,
+      .visit_content {
+        width: 1150px;
+        height: 300px;
+      }
     }
   }
   .market-visit {
@@ -747,12 +785,43 @@ export default {
     .right_date {
       position: absolute;
       right: 10px;
-      top: -392px;
+      top: -376px;
       display: flex;
       flex-direction: row;
       align-items: center;
       ol {
         padding-left: 10px;
+      }
+    }
+    .ranking_visit {
+      position: absolute;
+      right: 30px;
+      top: -292px;
+      width: 210px;
+      .store_des {
+        height: 40px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        .des_left {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .left_index {
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            color: #000;
+            margin-right: 10px;
+            &.firstNum {
+              color: #fff;
+              background: #314659;
+              border-radius: 50%;
+            }
+          }
+        }
       }
     }
   }

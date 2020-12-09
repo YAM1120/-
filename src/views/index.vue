@@ -20,31 +20,36 @@ import AsideNave from "../components/Aside";
 import HeaderTop from "../components/Header";
 export default {
   name: "Index",
+  inject: ["globalAddListner", "globalRemoveListner"],
   data() {
     return {
-      items: [],
+      items: []
     };
   },
   components: {
     AsideNave,
-    HeaderTop,
+    HeaderTop
   },
   mounted() {
     this.getMuneData();
+    this.globalAddListner();
   },
   methods: {
     getMuneData() {
       this.$apiList
         .getMenuData()
-        .then((res) => {
+        .then(res => {
           console.log(res, "res");
           this.items = res.data.data.data;
         })
-        .catch((err) => {
+        .catch(err => {
           this.$message.error("请求失败");
         });
-    },
+    }
   },
+  beforeDestroy() {
+    this.globalRemoveListner();
+  }
 };
 </script>
 <style scoped lang="scss">

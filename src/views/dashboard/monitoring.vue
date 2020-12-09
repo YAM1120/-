@@ -41,12 +41,15 @@
         ></el-autocomplete>
       </el-form-item>
     </el-form>
+    <luckyDraw></luckyDraw>
   </div>
 </template>
 <script>
 import axios from "axios";
+import luckyDraw from "../../components/dashboard/monitoring/luckyDraw.vue";
 export default {
   name: "monitoring",
+  components: { luckyDraw },
   data() {
     return {
       //分享弹窗目录
@@ -57,11 +60,21 @@ export default {
         children: "children",
         label: "text",
         multiple: true, //多选
+        lazy: true,
+        lazyLoad(node, resolve) {
+          console.log(node, "lazy");
+          //   if (node.level === 0) {
+          //     this.parentTree();
+          //   }
+          //   if (node.level > 0) {
+          //     this.getRoadTreeList(node.data, resolve);
+          //   }
+        }
         // emitPath: false,
         // checkStrictly: true,
       },
       restaurants: [],
-      state1: "",
+      state1: ""
     };
   },
   mounted() {
@@ -69,13 +82,25 @@ export default {
     this.getInputData();
   },
   methods: {
+    // 树状图懒加载
+    loadlazy(node, resolve, data) {
+      console.log(node, resolve, "lazy");
+      //   if (node.level === 0) {
+      //     this.getRoadTreeList(null, resolve);
+      //   }
+      //   if (node.level > 0) {
+      //     this.getRoadTreeList(node.data, resolve);
+      //   }
+    },
     // 获取所属目录
     parentTree() {
       axios
-        .get(`http://192.168.1.229:8060/api/v1/devchannel/dirtree`)
-        .then((res) => {
+        .get(
+          `https://www.fastmock.site/mock/987c930d39e984ff5dfa0e1248378ccf/htgl/lazytree`
+        )
+        .then(res => {
           console.log(res, "mmmm");
-          if (res.data.errcode == 0) {
+          if (res.status == 200) {
             this.pcodeArr = res.data.data;
             console.log(this.pcodeArr, "lllll");
           }
@@ -109,11 +134,11 @@ export default {
     getInputData() {
       this.$apiList
         .getLineData()
-        .then((res) => {
+        .then(res => {
           console.log(res, "res");
           this.restaurants = res.data.data.data;
         })
-        .catch((err) => {
+        .catch(err => {
           this.$message.error("请求失败");
         });
     },
@@ -127,7 +152,7 @@ export default {
       cb(results);
     },
     createFilter(queryString) {
-      return (restaurant) => {
+      return restaurant => {
         console.log(restaurant.toLowerCase(), "toLowerCase");
         return (
           restaurant.toLowerCase().indexOf(queryString.toLowerCase()) != -1
@@ -136,8 +161,8 @@ export default {
     },
     handleSelect(item) {
       console.log(item);
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped lang="scss">

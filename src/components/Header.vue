@@ -11,7 +11,7 @@
         <i class="el-icon-message-solid"></i>
       </el-badge>
     </div>
-    <div class="back_out">
+    <div class="back_out" @click="loginOut">
       <i class="el-icon-switch-button"></i>
       <span>退出</span>
     </div>
@@ -22,6 +22,38 @@ export default {
   name: "HeaderTop",
   data() {
     return {};
+  },
+  mounted() {},
+  methods: {
+    loginOut() {
+      this.$confirm("是否退出账号，回到登录页面", "退出提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+        center: true
+      })
+        .then(() => {
+          window.sessionStorage.removeItem("coded");
+          this.$router.push("/");
+          // this.$apiList.logout().then(res => {
+          //   if (res.data.code) {
+          //     window.sessionStorage.removeItem("token");
+          //     this.$store.dispatch("SETUSER", null);
+          //     this.$store.dispatch("SETMENU", null);
+          //     sessionStorage.removeItem("menu");
+          //     sessionStorage.removeItem("token");
+          //     this.$router.push("/login");
+          //     location.reload()
+          //   }
+          // });
+        })
+        .catch(() => {
+          this.$message({
+            type: "success",
+            message: "已取消退出"
+          });
+        });
+    }
   }
 };
 </script>
